@@ -14,10 +14,10 @@ import { AppRegistry,
 	     ImageBackground
 		} from 'react-native';
 
-class Login extends Component
+class Makes extends Component
 {
 	static navigationOptions = {
-          title: 'Login',
+          title: 'Receipt',
           headerTintColor: '#ffffff',
           headerStyle: {
             backgroundColor: '#000000',
@@ -31,57 +31,35 @@ class Login extends Component
   constructor(props){
   super(props);
   this.state = {
-    InputEmail: "",
-    InputPassword: "",
+    InputWmeter: '',
   }
 }
 LoginFunction = () => {
-  const {InputEmail} = this.state;
-  const {InputPassword} = this.state;
-  if (InputEmail == "" || InputPassword == "") {
-    alert("Fields are Empty");
-  }
-  else if (InputEmail == "") {
-    alert("E-mail Field is Empty");
-  }
-  else if (InputPassword == "") {
-    alert("Password Field is Empty");
+  const {InputWmeter} = this.state;
+
+  if (InputWmeter == "" ) {
+    alert("Water Meter Field is Empty");
   }
   else{
-  fetch('http://192.168.1.199:8000/api/v1/login', {
+  fetch('http://192.168.1.199:8000/api/v1/add', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
     },
     body: JSON.stringify({
-      email: InputEmail,
-      password: InputPassword
+      water_meter: InputWmeter,
     })
   }).then((response) => response.json())
     .then((responseJson) => {
-      //alert(responseJson));
-      for (var key in responseJson) {
-        if (responseJson.hasOwnProperty(key)) {
-          // alert(key + ": " + responseJson[key]);
-          // this.props.navigation.navigate('ReportScreen');
-           if(responseJson[key] == responseJson.Hello){
-           	//AsyncStorage.setItem('access_token', responseJson)
-            alert(key + " " + responseJson[key]);
-            this.props.navigation.navigate('ReportScreen');
-          }
-          else{
-           alert(key + " " + responseJson[key]);
-          }
-        }
+      if (responseJson.message) {
+        alert(responseJson.message);
       }
-      // if (responseJson) {
-      //   Alert.alert('Successfully Logged in');
-      //   //this.props.navigation.navigate("Welcome");
-      // }
-      // else{
-      //   Alert.alert('Invalid E-mail or Password');
-      // }
+      else {
+        //alert(responseJson.Names);
+        this.props.navigation.navigate(`ViewScreen`, { param: responseJson });
+      }
     }).catch((error) => {
       console.error(error);
     });
@@ -96,33 +74,21 @@ LoginFunction = () => {
        <ImageBackground source={require('../images/3.jpg')} style={{width: '100%', height: '100%', }}>
        <Image style = {{width:80, height:83}} source = {require('../images/ayat.png')}/>
          <View style={{marginBottom: 20}}>
-          <Text style = { styles.TextStyle }> Welcome to My App </Text>
+          <Text style = { styles.TextStyle }>Welcome to AYATEKE Star</Text>
           </View>
 
           <TextInput style = {styles.inputBox}
           underlineColorAndroid = 'rgba(0, 0, 0, 0)'
-          placeholder = 'E-mail'
+          placeholder = 'Water Meter'
           placeholderTextColor = "#ffffff"
           selectionType = "#ffffff"
-          autoCapitalize="none"
-          keyboardType = "email-address"
-          onSubmitEditing = {() => this.password.focus()}
-          onChangeText = {InputEmail => this.setState({InputEmail})}
-          value = {this.state.InputEmail}
+          //autoCapitalize="none"
+          //keyboardType = "email-address"
+          onChangeText = {InputWmeter => this.setState({InputWmeter})}
           />
-          <TextInput style = {styles.inputBox}
-          underlineColorAndroid = 'rgba(0, 0, 0, 0)'
-          placeholder = 'Password'
-          placeholderTextColor = "#ffffff"
-          autoCapitalize="none"
-          secureTextEntry = {true}
-          ref = {(input) => this.password = input}
-          onChangeText = {InputPassword => this.setState({InputPassword})}
-          value = {this.state.InputPassword}
           
-          />
           <TouchableOpacity style = {styles.button} onPress = {this.LoginFunction.bind(this)}>
-          <Text style = {styles.buttonText}>SignUp</Text>
+          <Text style = {styles.buttonText}>Check</Text>
           </TouchableOpacity>
           </ImageBackground>
 
@@ -188,4 +154,4 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
-export default Login;
+export default Makes;

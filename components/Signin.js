@@ -173,3 +173,4 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
+only one default export allowed per module

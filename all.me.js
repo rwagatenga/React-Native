@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 
-import { AppRegistry, StyleSheet, Text, View, Image, TouchableOpacity, TextInput, Alert, Keyboard } from 'react-native';
+import { AppRegistry,
+         StyleSheet,
+         Text,
+         View,
+         Image,
+         TouchableOpacity, 
+         TextInput, 
+         Alert, 
+         Keyboard,
+         AsyncStorage 
+       } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { YellowBox } from 'react-native';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
@@ -345,4 +355,179 @@ const styles = StyleSheet.create({
   // let collection = {}
   // collection.email = this.state.email,
   // collection.password = this.state.password,
-  // console.warn(collection);
+  // console.warn(collection);// async LoginFunction() {
+//     var data = {
+//      email: this.state.InputEmail,
+//      password: this.state.InputPassword
+//     };
+//     try {
+//      let response = await fetch(
+//       "http://192.168.1.114:8000/api/v1/logins",
+//       {
+//         method: "POST",
+//         headers: {
+//          "Accept": "application/json",
+//          "Content-Type": "application/json"
+//         },
+//        body: JSON.stringify(data)
+//      }
+//     );
+//      if (response.status >= 200 && response.status < 300) {
+//         alert("authenticated successfully!!!");
+//      }
+//    } catch (errors) {
+
+//      alert(errors);
+//     } 
+// }
+LoginFunction = () => {
+  const {InputEmail} = this.state;
+  const {InputPassword} = this.state;
+  if (InputEmail == "" || InputPassword == "") {
+    alert("Fields are Empty");
+  }
+  else if (InputEmail == "") {
+    alert("E-mail Field is Empty");
+  }
+  else if (InputPassword == "") {
+    alert("Password Field is Empty");
+  }
+  else{
+  fetch('http://192.168.1.169:8000/api/v1/login', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: InputEmail,
+      password: InputPassword
+    })
+  }).then((response) => response.json())
+    .then((responseJson) => {
+      //alert(responseJson));
+      for (var key in responseJson) {
+        if (responseJson.hasOwnProperty(key)) {
+          alert(key + ": " + responseJson[key]);
+          this.props.navigation.navigate('ReportScreen');
+          // if(responseJson[key] == 'Welcome'){
+          //  alert(key + ": " + responseJson[key]);
+          //  this.props.navigation.navigate('HomeScreen');
+          // }
+          // else{
+          //  alert(key + ": " + responseJson[key]);
+          // }
+        }
+      }
+      // if (responseJson) {
+      //   Alert.alert('Successfully Logged in');
+      //   //this.props.navigation.navigate("Welcome");
+      // }
+      // else{
+      //   Alert.alert('Invalid E-mail or Password');
+      // }
+    }).catch((error) => {
+      console.error(error);
+    });
+    Keyboard.dismiss();
+    }
+}
+async storeToken(accessToken)
+{
+  try {
+    await AsyncStorage.setItem(ACCESS_TOKEN, access_token);
+    this.getToken();
+    }
+    catch(error)
+    {
+      alert('Something went Wrong');
+    }
+  }
+  async getToken()
+  {
+    try {
+      let token = await AsyncStorage.getItem(ACCESS_TOKEN);
+      alert('token is ' + token);
+    }
+    catch(error)
+    {
+      alert('Something went Wrong')
+    }
+  }
+  async removeToke()
+  {
+    try {
+      await AsyncStorage.removeItem(ACCESS_TOKEN);
+      this.getToken();
+    }
+    catch(error)
+    {
+      alert('Something went Wrong')
+    }
+  }
+
+async LoginFunction()
+{
+  try {
+    let response = await fetch('http://192.168.43.198:8000/api/v1/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        session: {
+          email: this.state.InputEmail,
+          password: this.state.InputPassword
+        }
+      })
+    });
+    let res = await response.text();
+    if (response.status >= 200 && response.status < 300 ) {
+      this.setState({error: ''});
+      let accessToken = res;
+      this.storeToken(accessToken);
+      alert('res token: ' + accessToken);
+    }
+    else {
+      let error = res;
+      throw error;
+    }
+  }
+  catch(error)
+  {
+    this.setState({error: error});
+    alert('error ' + error);
+  }
+
+}
+
+// componentDidMount() {
+//   this.timer=setInterval(() =>this.getTasks(), 1000);
+// }
+
+// async getTasks() {
+//   return fetch("http://192.168.42.177/LaravelBackend/public/api/tasks")
+//   .then(response => response.json())
+//   .then(responseJson => {
+//   this.setState({
+//   tasks:responseJson.tasks,
+//   c_tasks:responseJson.c_tasks
+// }, function() {
+//     //comment
+//    });
+// })
+// .catch(error => {
+// null;
+// });
+// }
+
+// <TextInput style = {styles.inputBox}
+          // underlineColorAndroid = 'rgba(0, 0, 0, 0)'
+          // placeholder = 'New Index'
+          // placeholderTextColor = "#ffffff"
+          // //autoCapitalize="none"
+          // ref = {(input) => this.index = input}
+          // onChangeText = {InputIndex => this.setState({InputIndex})}
+          
+          // />

@@ -1,4 +1,4 @@
-//Home.js
+//View.js
 
 import React, { Component } from 'react';
 import { AppRegistry,
@@ -10,12 +10,32 @@ import { AppRegistry,
 		 TextInput, 
 		 Alert, 
 		 Keyboard,
-		 ImageBackground
+		 ImageBackground,
+     ListView,
+     ActivityIndicator,
+     FlatList,
+     List,
+     Button
 		} from 'react-native';
 
-export class Home extends Component {
+export class FinalReport extends Component {
+  constructor (props) {
+    super (props);
+    const { param } = this.props.navigation.state.params;
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      dataSource: ds.cloneWithRows([
+      'Names: ' + param.Names,
+      'Water Meter: ' + param.Water_Meter,
+      'M3 Consumed: ' + param.M3_Consumed,
+      'Amount: ' + param.amount
+      ]),
+      wmeter: param.Water_Meter,
+    }
+  }
+  
 	static navigationOptions = {
-          title: 'Welcome',
+          title: 'Check Receipt',
           headerTintColor: '#ffffff',
           headerStyle: {
             backgroundColor: '#000000',
@@ -26,24 +46,17 @@ export class Home extends Component {
             fontSize: 18,
           },
       };
-      Login = () =>
-   {
-    this.props.navigation.navigate('LoginScreen');
-   }
-  render() {
-    return (
+     
+        render() {
+    return(
       <View style = {styles.mainContainer}>
-      <ImageBackground source={require('../images/3.jpg')} style={{width: '100%', height: '100%', }}>
-       <Image style = {{width:80, height:83}} source = {require('./../images/ayat.png')}/>
-         <View style={{marginBottom: 20}}>
-          <Text style = { styles.TextStyle }>Welcome to AYATEKE Star</Text>
-          </View>
-          <TouchableOpacity style = {styles.buttonTouch} onPress = { this.Login }>
-          <Text style = {styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-        </ImageBackground>
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={(rowData) => <Text>{rowData}</Text>}
+      />
+          <Text></Text>
        </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -84,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
   },
   inputBox: {
-    width: 350,
+    width: 300,
     height: 50,
     borderRadius: 5,
     paddingHorizontal: 16,
@@ -110,4 +123,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Home;
+export default FinalReport;

@@ -9,12 +9,42 @@ import { AppRegistry,
 		 TouchableOpacity, 
 		 TextInput, 
 		 Alert, 
-		 Keyboard
+		 Keyboard,
+     BackHandler,
+     BackAndroid,
+     AsyncStorage
 		} from 'react-native';
-
+    import {decode as atob, encode as btoa} from 'base-64'
 export class Report extends Component {
+
+
+ LogoutFunction = () => {
+
+        fetch('http://192.168.1.199:8000/api/v1/logout', {
+            method: "POST", 
+            headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'application/json',
+                'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
+            },
+            // body: JSON.stringify({
+            //   access_token: STORAGE_KEY
+            // })
+        })
+        .then((response) => response.json())
+    .then((responseJson) => {
+      alert(responseJson.message);
+      this.props.navigation.navigate('LoginScreen');
+    }).catch((error) => {
+      console.error(error);
+    });
+}
+MakeFunction = () => {
+    this.props.navigation.navigate('MakesScreen');
+  }
 	static navigationOptions = {
           title: 'Receipt',
+           headerLeft: null,
           headerTintColor: '#ffffff',
           headerStyle: {
             backgroundColor: '#000000',
@@ -25,54 +55,19 @@ export class Report extends Component {
             fontSize: 18,
           },
       };
-      LoginFunction = () =>
-      {
-
-      }
   render() {
+    //const {navigate} = this.props.navigation;
     return (
       <View style = {styles.mainContainer}>
        <Image style = {{width:80, height:83}} source = {require('./../images/ayat.png')}/>
          <View style={{marginBottom: 20}}>
           <Text style = { styles.TextStyle }> Make a Recept </Text>
           </View>
-          <TextInput style = {styles.inputBox}
-          underlineColorAndroid = 'rgba(0, 0, 0, 0)'
-          placeholder = 'FullNames'
-          placeholderTextColor = "#ffffff"
-          selectionType = "#ffffff"
-          onSubmitEditing = {() => this.account.focus()}
-          onChangeText = {InputEmail => this.setState({InputNames})}
-          />
-          <TextInput style = {styles.inputBox}
-          underlineColorAndroid = 'rgba(0, 0, 0, 0)'
-          placeholder = 'Account No'
-          placeholderTextColor = "#ffffff"
-          selectionType = "#ffffff"
-          ref = {(input) => this.account = input}
-          onSubmitEditing = {() => this.size.focus()}
-          onChangeText = {InputEmail => this.setState({InputAccount})}
-          />
-          <TextInput style = {styles.inputBox}
-          underlineColorAndroid = 'rgba(0, 0, 0, 0)'
-          placeholder = 'M3'
-          placeholderTextColor = "#ffffff"
-          selectionType = "#ffffff"
-          ref = {(input) => this.price = input}
-          onSubmitEditing = {() => this.pice.focus()}
-          onChangeText = {InputEmail => this.setState({InputSize})}
-          />
-          <TextInput style = {styles.inputBox}
-          underlineColorAndroid = 'rgba(0, 0, 0, 0)'
-          placeholder = 'Price'
-          placeholderTextColor = "#ffffff"
-          selectionType = "#ffffff"
-          ref = {(input) => this.price = input}
-          onSubmitEditing = {() => this.password.focus()}
-          onChangeText = {InputEmail => this.setState({InputAccount})}
-          />
-          <TouchableOpacity style = {styles.button} onPress = {this.LoginFunction.bind(this)}>
-          <Text style = {styles.buttonText}>SignUp</Text>
+          <TouchableOpacity style = {styles.button} onPress = { this.MakeFunction }>
+          <Text style = {styles.buttonText}>Make a Recept</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style = {styles.button} onPress = {this.LogoutFunction.bind(this)}>
+          <Text style = {styles.buttonText}>Logout</Text>
           </TouchableOpacity>
           <Text></Text>
           </View>
