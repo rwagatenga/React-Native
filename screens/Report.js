@@ -16,6 +16,7 @@ import { AppRegistry,
 		} from 'react-native';
     import {decode as atob, encode as btoa} from 'base-64'
 export class Report extends Component {
+<<<<<<< HEAD
   constructor (props) {
     super (props);
     //const { param } = this.props.navigation.state.params;
@@ -42,6 +43,13 @@ export class Report extends Component {
  LogoutFunction = () => {
 
         fetch('http://192.168.43.198:8000/api/v1/logout', {
+=======
+
+
+ LogoutFunction = () => {
+
+        fetch('http://192.168.1.199:8000/api/v1/logout', {
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
             method: "POST", 
             headers: {
                 // 'Accept': 'application/json',
@@ -87,9 +95,12 @@ MakeFunction = () => {
           <TouchableOpacity style = {styles.button} onPress = { this.MakeFunction }>
           <Text style = {styles.buttonText}>Make a Recept</Text>
           </TouchableOpacity>
+<<<<<<< HEAD
           <TouchableOpacity style = {styles.button} onPress = { this.ViewReport }>
           <Text style = {styles.buttonText}>View Report</Text>
           </TouchableOpacity>
+=======
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
           <TouchableOpacity style = {styles.button} onPress = {this.LogoutFunction.bind(this)}>
           <Text style = {styles.buttonText}>Logout</Text>
           </TouchableOpacity>

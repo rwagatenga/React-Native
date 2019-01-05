@@ -48,7 +48,11 @@ LoginFunction = () => {
     alert("Password Field is Empty");
   }
   else{
+<<<<<<< HEAD
   fetch('http://192.168.43.198:8000/api/v1/login', {
+=======
+  fetch('http://192.168.1.199:8000/api/v1/login', {
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -60,7 +64,11 @@ LoginFunction = () => {
     })
   }).then((response) => response.json())
     .then((responseJson) => {
+<<<<<<< HEAD
       //alert(responseJson);
+=======
+      //alert(responseJson));
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
       for (var key in responseJson) {
         if (responseJson.hasOwnProperty(key)) {
           // alert(key + ": " + responseJson[key]);
@@ -122,7 +130,11 @@ LoginFunction = () => {
           
           />
           <TouchableOpacity style = {styles.button} onPress = {this.LoginFunction.bind(this)}>
+<<<<<<< HEAD
           <Text style = {styles.buttonText}>Login</Text>
+=======
+          <Text style = {styles.buttonText}>SignUp</Text>
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
           </TouchableOpacity>
           </ImageBackground>
 

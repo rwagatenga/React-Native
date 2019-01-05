@@ -41,7 +41,11 @@ LoginFunction = () => {
     alert("Water Meter Field is Empty");
   }
   else{
+<<<<<<< HEAD
   fetch('http://192.168.43.198:8000/api/v1/check', {
+=======
+  fetch('http://192.168.1.199:8000/api/v1/add', {
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -49,18 +53,25 @@ LoginFunction = () => {
       'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
     },
     body: JSON.stringify({
+<<<<<<< HEAD
       counterNumber: InputWmeter,
+=======
+      water_meter: InputWmeter,
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
     })
   }).then((response) => response.json())
     .then((responseJson) => {
       if (responseJson.message) {
         alert(responseJson.message);
       }
+<<<<<<< HEAD
       else
         if (responseJson.messege) {
           alert(responseJson.messege);
           this.props.navigation.navigate(`ViewScreen`, { param: responseJson });
         }
+=======
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
       else {
         //alert(responseJson.Names);
         this.props.navigation.navigate(`ViewScreen`, { param: responseJson });

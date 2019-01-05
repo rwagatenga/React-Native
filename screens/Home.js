@@ -42,7 +42,10 @@ export class Home extends Component {
           <Text style = {styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </ImageBackground>
+<<<<<<< HEAD
         <Text>Hello Word</Text>
+=======
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
        </View>
     )
   }

@@ -28,7 +28,11 @@ export class Views extends Component {
       'Names: ' + param.Names,
       'Water Meter: ' + param.Water_Meter,
       'M3 Consumed: ' + param.M3_Consumed,
+<<<<<<< HEAD
       'Amount: ' + param.Total_Amount
+=======
+      'Amount: ' + param.amount
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
       ]),
       InputWmeter: param.Water_Meter,
     }
@@ -41,7 +45,11 @@ export class Views extends Component {
       alert("New Index Field is Empty");
     }
     else{
+<<<<<<< HEAD
   fetch('http://192.168.43.198:8000/api/v1/rolove', {
+=======
+  fetch('http://192.168.1.199:8000/api/v1/rolove', {
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -49,7 +57,11 @@ export class Views extends Component {
       'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
     },
     body: JSON.stringify({
+<<<<<<< HEAD
       counterNumber: InputWmeter,
+=======
+      water_meter: InputWmeter,
+>>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
       index: InputNewIndex
     })
   }).then((response) => response.json())
