@@ -98,4 +98,4 @@ async _userLogout() {
     } catch (error) {
         console.log('AsyncStorage error: ' + error.message);
     }
-},
+}})

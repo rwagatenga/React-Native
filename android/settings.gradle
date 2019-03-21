@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-rootProject.name = 'AyatekeStar'
-=======
-rootProject.name = 'LaravelRN'
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
+rootProject.name = 'ayateke'
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
 
 include ':app'

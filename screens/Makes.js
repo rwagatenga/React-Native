@@ -18,14 +18,18 @@ class Makes extends Component
 {
 	static navigationOptions = {
           title: 'Receipt',
+          headerRight:<TouchableOpacity
+          title="Logout"
+          color="#000"
+          />,
           headerTintColor: '#ffffff',
           headerStyle: {
-            backgroundColor: '#000000',
-            borderBottomColor: '#ffffff',
-            borderBottomWidth: 3,
+            backgroundColor:'#8589d2'
           },
+      
           headerTitleStyle: {
             fontSize: 18,
+            fontFamily : "CaviarDreams"
           },
       };
   constructor(props){
@@ -41,11 +45,9 @@ LoginFunction = () => {
     alert("Water Meter Field is Empty");
   }
   else{
-<<<<<<< HEAD
-  fetch('http://192.168.43.198:8000/api/v1/check', {
-=======
-  fetch('http://192.168.1.199:8000/api/v1/add', {
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
+
+  fetch('http://yateke.herokuapp.com/api/v1/check', {
+  // fetch('http://192.168.43.16:8000/api/v1/add', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -53,25 +55,19 @@ LoginFunction = () => {
       'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
     },
     body: JSON.stringify({
-<<<<<<< HEAD
       counterNumber: InputWmeter,
-=======
-      water_meter: InputWmeter,
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
+      // water_meter: InputWmeter,
     })
   }).then((response) => response.json())
     .then((responseJson) => {
       if (responseJson.message) {
         alert(responseJson.message);
       }
-<<<<<<< HEAD
       else
         if (responseJson.messege) {
           alert(responseJson.messege);
           this.props.navigation.navigate(`ViewScreen`, { param: responseJson });
         }
-=======
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
       else {
         //alert(responseJson.Names);
         this.props.navigation.navigate(`ViewScreen`, { param: responseJson });
@@ -82,23 +78,44 @@ LoginFunction = () => {
     Keyboard.dismiss();
     }
 }
+LogoutFunction = () => {
 
+  fetch('http://yateke.herokuapp.com/api/v1/logout', {
+      method: "POST", 
+      headers: {
+          // 'Accept': 'application/json',
+          // 'Content-Type': 'application/json',
+          'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
+      },
+      // body: JSON.stringify({
+      //   access_token: STORAGE_KEY
+      // })
+  })
+  .then((response) => response.json())
+.then((responseJson) => {
+alert(responseJson.message);
+this.props.navigation.navigate('LoginScreen');
+}).catch((error) => {
+console.error(error);
+});
+}
  render()
  {
     return(
        <View style = { styles.mainContainer }>
-       <ImageBackground source={require('../images/3.jpg')} style={{width: '100%', height: '100%', }}>
-       <Image style = {{width:80, height:83}} source = {require('../images/ayat.png')}/>
-         <View style={{marginBottom: 20}}>
-          <Text style = { styles.TextStyle }>Welcome to AYATEKE Star</Text>
-          </View>
-
-          <TextInput style = {styles.inputBox}
-          underlineColorAndroid = 'rgba(0, 0, 0, 0)'
-          placeholder = 'Water Meter'
-          placeholderTextColor = "#ffffff"
+       <ImageBackground source={require('../images/back3.png')} style={{width: '100%', height: '100%', }}>
+       
+         
+<View>
+<ImageBackground source={require('../images/user.png')} style={{width: '100%', height: '100%', }}>
+<View style={styles.mainContainer}>
+<TextInput style = {styles.inputBox}
+          underlineColorAndroid = '#8589d2'
+          placeholder = 'Customer Id Number '
+          placeholderTextColor = "#a7a7a7"
           selectionType = "#ffffff"
-          //autoCapitalize="none"
+          fontFamily = "CaviarDreams"
+          //autoCapitalize="none5e5e5
           //keyboardType = "email-address"
           onChangeText = {InputWmeter => this.setState({InputWmeter})}
           />
@@ -106,7 +123,12 @@ LoginFunction = () => {
           <TouchableOpacity style = {styles.button} onPress = {this.LoginFunction.bind(this)}>
           <Text style = {styles.buttonText}>Check</Text>
           </TouchableOpacity>
-          </ImageBackground>
+          <Text></Text>
+</View>
+
+          </ImageBackground>     
+</View>
+</ImageBackground>
 
        </View>
     );
@@ -117,8 +139,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center', 
-    backgroundColor: '#ffffff',
-    margin: 7,
+   
+   
   },
   TextStyle:
  {
@@ -127,32 +149,44 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000',
  },
- buttonTouch:
- {
-    width: 210,
-    height: 40,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 5,
-    paddingLeft: 5,
-    backgroundColor: '#000000',
-    margin: 10,
- },
+//  buttonTouch:
+//  {
+//   width: 280,
+//   height: 50,
+//   paddingTop: 5,
+//   paddingBottom: 5,
+//   borderRadius:50,
+//   paddingRight: 5,
+//   alignSelf:"center",
+//   paddingLeft: 5,
+//   borderColor:"#fff",
+//   borderWidth:0.5,
+//   backgroundColor:'rgba(0,0,255,0.1)',
+//   justifyContent: 'center',
+//   alignItems: 'center',
+//   shadowColor:'#000000',
+//   shadowOffset:{width:0 ,  height:2},
+//   elevation:5
+//  },
  buttonText: {
-    fontSize: 23,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontFamily:'CaviarDreams',
     textAlign: 'center',
-    color: '#ffffff',
-    backgroundColor: '#000000',
+    color: '#fff',
+    
   },
   inputBox: {
-    width: 280,
+    width: "70%",
     height: 50,
-    borderRadius: 5,
+    borderRadius: 50,
     paddingHorizontal: 16,
-    fontSize: 20,
-    color: '#ffffff',
-    backgroundColor: '#000000',
+    fontSize: 14,
+    color: '#000',
+    textAlign:"center",
+    // backgroundColor: '#2649b2',
+    // borderColor:'rgba(220,220,220,0.5)',
+    // borderWidth:0.3,
+    alignSelf:"center",
     marginVertical: 10,
     paddingTop: 5,
     paddingBottom: 5,
@@ -160,11 +194,23 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
   button: {
-    width: 150,
-    backgroundColor: '#000000',
-    marginVertical: 10,
-    borderRadius: 5,
-    paddingVertical: 8,
+    width: 250,
+    height: 50,
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderRadius:50,
+    paddingRight: 5,
+    alignSelf:"center",
+    paddingLeft: 5,
+    // borderColor:"#2649b2",
+    // borderWidth:0.5,
+   shadowColor:"#000000",
+   shadowOffset:{width:0 , height:2},
+   elevation:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor:"#8589d2",
+    
   },
   question: {
     marginVertical: 10,

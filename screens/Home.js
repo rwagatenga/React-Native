@@ -1,6 +1,6 @@
 //Home.js
-
 import React, { Component } from 'react';
+import {Animated} from 'react-native'
 import { AppRegistry,
 		 StyleSheet, 
 		 Text, 
@@ -9,18 +9,31 @@ import { AppRegistry,
 		 TouchableOpacity, 
 		 TextInput, 
 		 Alert, 
-		 Keyboard,
+     Keyboard,
+     StatusBar,
 		 ImageBackground
 		} from 'react-native';
-
+import Card from '../screens/Card';
 export class Home extends Component {
+  state={
+    fadeIn:new Animated.Value(0),
+  }
+  // componentDidMount(){
+  //   Animated.timing(this.state.fadeIn,
+  //     {
+  //       toValue:1,
+  //       duration
+  //     })
+  // }
+  
 	static navigationOptions = {
+    header:null,
           title: 'Welcome',
           headerTintColor: '#ffffff',
+          fontFamily:'CaviarDreams',
           headerStyle: {
-            backgroundColor: '#000000',
-            borderBottomColor: '#ffffff',
-            borderBottomWidth: 3,
+            backgroundColor:'#2649b2',
+      
           },
           headerTitleStyle: {
             fontSize: 18,
@@ -31,61 +44,129 @@ export class Home extends Component {
     this.props.navigation.navigate('LoginScreen');
    }
   render() {
+    
     return (
+
       <View style = {styles.mainContainer}>
-      <ImageBackground source={require('../images/3.jpg')} style={{width: '100%', height: '100%', }}>
-       <Image style = {{width:80, height:83}} source = {require('./../images/ayat.png')}/>
-         <View style={{marginBottom: 20}}>
-          <Text style = { styles.TextStyle }>Welcome to AYATEKE Star</Text>
-          </View>
+        <StatusBar 
+        backgroundColor = "#8589d2"
+        />
+      <ImageBackground source={require('../images/3.jpg')} style={styles.BACK}>
+<Card> 
+
+<View style={styles.title}>
+        <Image style = {{width:150, height:150}} source = {require('./../images/ayat.png')}/>
+      </View>
+      <View style={styles.header}>
+          <Text style = { styles.TextStyle }>WATER FOR YOUR LIFE</Text>
+          <Text style = { styles.TextStyle2 }>Our Prime Concern</Text>
+        </View>
+        <View style={styles.containerBtn}>
           <TouchableOpacity style = {styles.buttonTouch} onPress = { this.Login }>
-          <Text style = {styles.buttonText}>Login</Text>
+            <Text style ={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
+          </View>
+</Card>
+     
+        
+         
+          
+          
         </ImageBackground>
-<<<<<<< HEAD
-        <Text>Hello Word</Text>
-=======
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
+       
        </View>
     )
   }
 }
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+
     justifyContent: 'center',
     alignItems: 'center', 
-    backgroundColor: '#ffffff',
-    margin: 7,
+    backgroundColor: '#ffffff'
+  },
+  BACK:{
+width:'100%',
+height:'100%'
+  },
+  title:{
+flex:1,
+justifyContent:"center",
+alignItems:"center",
+paddingTop:120
+  },
+  Logo:{
+flex:2
   },
   TextStyle:
  {
-    fontSize: 23,
-    fontWeight: 'bold',
+    fontSize: 25,
+    fontWeight: 'normal',
     textAlign: 'center',
-    color: '#000000',
+    fontWeight:"300",
+    color: '#ffffff',
+    justifyContent:'center',
+    fontFamily:'CaviarDreams',
+ },
+ TextStyle2:{
+  fontSize: 15,
+    fontWeight: 'normal',
+    textAlign: 'center',
+    color: '#8589d2',
+    justifyContent:'center',
+    marginTop:20,
+    fontFamily:'CaviarDreams',
+ },
+ header:{
+justifyContent:'center',
+alignItems:'center',
+paddingTop:'50%',
+padding:10
+
+
+
+
+
+ },
+ containerBtn:{
+justifyContent:'center',
+alignItems:'center',
+padding:'20%'
  },
  buttonTouch:
  {
-    width: 180,
+    width: 280,
     height: 50,
     paddingTop: 5,
     paddingBottom: 5,
+    borderRadius:50,
     paddingRight: 5,
     paddingLeft: 5,
-    backgroundColor: '#000000',
-    margin: 10,
+    borderColor:"#fff",
+    borderWidth:0.5,
+    backgroundColor:'#8589d2',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 70,
+    shadowColor:'#000000',
+    shadowOffset:{width:0 ,  height:2},
+    elevation:5
+   
+    
     
  },
  buttonText: {
-    fontSize: 23,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontWeight: 'normal',
     textAlign: 'center',
     color: '#ffffff',
-    backgroundColor: '#000000',
+    letterSpacing:3,
+    justifyContent:'center',
+    alignItems:'center',
+     fontFamily:'CaviarDreams',
+     shadowColor:'#000000',
+     shadowOffset:{width:0 ,  height:2},
+     elevation:5
+ 
   },
   inputBox: {
     width: 350,

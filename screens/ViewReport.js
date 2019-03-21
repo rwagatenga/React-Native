@@ -1,5 +1,4 @@
 //View.js
-
 import React, { Component } from 'react';
 import { AppRegistry,
 		 StyleSheet, 
@@ -17,21 +16,20 @@ import { AppRegistry,
      List,
      Button
 		} from 'react-native';
-
 export class ViewReport extends Component {
-  constructor (props) {
+  constructor (props){
     super (props);
     const { param } = this.props.navigation.state.params;
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([
       'Names: ' + param.Names,
-      'Water Meter: ' + param.cId,
+      'Amount: ' + param.Amount,
+      'Identification: ' + param.cId
       ]),
       //wmeter: param.Water_Meter,
     }
   }
-  
 	static navigationOptions = {
           title: 'ViewReport',
           headerTintColor: '#ffffff',
@@ -44,13 +42,12 @@ export class ViewReport extends Component {
             fontSize: 18,
           },
       };
-     
         render() {
     return(
       <View style = {styles.mainContainer}>
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(rowData) => <Text>{rowData}</Text>}
+        renderRow={(rowData) => <Text style={styles.data}>{rowData}</Text>}
       />
           <Text></Text>
        </View>
@@ -58,6 +55,10 @@ export class ViewReport extends Component {
   }
 }
 const styles = StyleSheet.create({
+  data:{
+padding:20,
+color:"#2f2f2f"
+  },
   mainContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 70,
-    
  },
  buttonText: {
     fontSize: 23,

@@ -8,25 +8,35 @@ import { AppRegistry,
 		 TextInput, 
 		 Alert, 
 		 Keyboard,
-	     BackHandler,
-	     BackAndroid,
-	     AsyncStorage,
-	     ImageBackground
-		} from 'react-native';
+    BackHandler,
+    BackAndroid,
+    AsyncStorage,
+    ImageBackground,
+    KeyboardAvoidingView
+    } from 'react-native';
 
 class Login extends Component
 {
+ 
 	static navigationOptions = {
+    header:null,
           title: 'Login',
+         
           headerTintColor: '#ffffff',
           headerStyle: {
-            backgroundColor: '#000000',
-            borderBottomColor: '#ffffff',
-            borderBottomWidth: 3,
+            backgroundColor:'#8589d2',
+            // borderBottomColor: '#ffffff',
+            // borderBottomWidth: 3,
+            textAlign: 'center',
+            
           },
           headerTitleStyle: {
-            fontSize: 18,
-          },
+            color: '#000',
+            textAlign: 'center',
+            alignSelf: 'center'
+            },
+     
+       
       };
   constructor(props){
   super(props);
@@ -48,11 +58,8 @@ LoginFunction = () => {
     alert("Password Field is Empty");
   }
   else{
-<<<<<<< HEAD
-  fetch('http://192.168.43.198:8000/api/v1/login', {
-=======
-  fetch('http://192.168.1.199:8000/api/v1/login', {
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
+
+  fetch('http://yateke.herokuapp.com/api/v1/login', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -64,11 +71,8 @@ LoginFunction = () => {
     })
   }).then((response) => response.json())
     .then((responseJson) => {
-<<<<<<< HEAD
-      //alert(responseJson);
-=======
+
       //alert(responseJson));
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
       for (var key in responseJson) {
         if (responseJson.hasOwnProperty(key)) {
           // alert(key + ": " + responseJson[key]);
@@ -83,13 +87,12 @@ LoginFunction = () => {
           }
         }
       }
-      // if (responseJson) {
-      //   Alert.alert('Successfully Logged in');
-      //   //this.props.navigation.navigate("Welcome");
-      // }
-      // else{
-      //   Alert.alert('Invalid E-mail or Password');
-      // }
+      if (responseJson) {
+        this.props.navigation.navigate("Welcome");
+      }
+      else{
+        Alert.alert('Invalid E-mail or Password');
+      }
     }).catch((error) => {
       console.error(error);
     });
@@ -101,12 +104,13 @@ LoginFunction = () => {
  {
     return(
        <View style = { styles.mainContainer }>
-       <ImageBackground source={require('../images/3.jpg')} style={{width: '100%', height: '100%', }}>
-       <Image style = {{width:80, height:83}} source = {require('../images/ayat.png')}/>
-         <View style={{marginBottom: 20}}>
-          <Text style = { styles.TextStyle }> Welcome to My App </Text>
-          </View>
-
+       <ImageBackground source={require('../images/5.jpg')} style={{width: '100%', height: '100%', }}>
+       {/* <Image style = {{width:80, height:83}} source = {require('../images/ayat.png')}/> */}
+     
+       
+     
+          <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+          <Text style = { styles.TextStyle }>Sign In </Text>
           <TextInput style = {styles.inputBox}
           underlineColorAndroid = 'rgba(0, 0, 0, 0)'
           placeholder = 'E-mail'
@@ -127,17 +131,15 @@ LoginFunction = () => {
           ref = {(input) => this.password = input}
           onChangeText = {InputPassword => this.setState({InputPassword})}
           value = {this.state.InputPassword}
-          
           />
           <TouchableOpacity style = {styles.button} onPress = {this.LoginFunction.bind(this)}>
-<<<<<<< HEAD
           <Text style = {styles.buttonText}>Login</Text>
-=======
-          <Text style = {styles.buttonText}>SignUp</Text>
->>>>>>> 3a692776c142d0cf2ce9cec1188e95ae9d3bc504
           </TouchableOpacity>
-          </ImageBackground>
+          <Text></Text>
+          </KeyboardAvoidingView>
 
+     
+         </ImageBackground>
        </View>
     );
  }
@@ -146,16 +148,25 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',
     backgroundColor: '#ffffff',
-    margin: 7,
+
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop:"35%",
+    backgroundColor:'rgba(0,0,0,0.8)',
+
+
   },
   TextStyle:
  {
-    fontSize: 23,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#000000',
+    fontSize: 35,
+    color: '#8589d2',
+    fontWeight:"300",
+    fontFamily:'CaviarDreams',
  },
  buttonTouch:
  {
@@ -169,20 +180,24 @@ const styles = StyleSheet.create({
     margin: 10,
  },
  buttonText: {
-    fontSize: 23,
-    fontWeight: 'bold',
+    fontSize: 15,
+    fontFamily:'CaviarDreams',
     textAlign: 'center',
     color: '#ffffff',
-    backgroundColor: '#000000',
+    
   },
   inputBox: {
-    width: 280,
+    width: "80%",
     height: 50,
-    borderRadius: 5,
+    borderRadius: 50,
     paddingHorizontal: 16,
-    fontSize: 20,
-    color: '#ffffff',
-    backgroundColor: '#000000',
+    fontSize: 14,
+    color: '#ddd',
+    textAlign:"center",
+    backgroundColor: '#rgba(0,0,0,0.5)',
+    borderColor:'rgba(220,220,220,0.5)',
+    borderWidth:0.3,
+    alignSelf:"center",
     marginVertical: 10,
     paddingTop: 5,
     paddingBottom: 5,
@@ -190,11 +205,23 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
   button: {
-    width: 150,
-    backgroundColor: '#000000',
-    marginVertical: 10,
-    borderRadius: 5,
-    paddingVertical: 8,
+    width: 280,
+    height: 50,
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderRadius:50,
+    paddingRight: 5,
+    alignSelf:"center",
+    paddingLeft: 5,
+    borderColor:"#fff",
+    borderWidth:0.5,
+    backgroundColor:'#8589d2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor:'#000000',
+    shadowOffset:{width:0 ,  height:2},
+    elevation:5
+   
   },
   question: {
     marginVertical: 10,

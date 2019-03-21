@@ -1,5 +1,4 @@
 //View.js
-
 import React, { Component } from 'react';
 import { AppRegistry,
 		 StyleSheet, 
@@ -28,25 +27,28 @@ export class FinalReport extends Component {
       'Names: ' + param.Names,
       'Water Meter: ' + param.Water_Meter,
       'M3 Consumed: ' + param.M3_Consumed,
-      'Amount: ' + param.amount
+      'Amount: ' + param.amount,
+      'Total Debit: ' + param.Total_Debit,
+      'Comment: ' + param.Comment,
       ]),
       wmeter: param.Water_Meter,
     }
   }
-  
+  BeBack = () => {
+    this.props.navigation.navigate('ReportScreen');
+  }
 	static navigationOptions = {
           title: 'Check Receipt',
           headerTintColor: '#ffffff',
           headerStyle: {
-            backgroundColor: '#000000',
-            borderBottomColor: '#ffffff',
-            borderBottomWidth: 3,
+            backgroundColor:'#8589d2',
+            // borderBottomColor: '#ffffff',
+            // borderBottomWidth: 3,
           },
           headerTitleStyle: {
             fontSize: 18,
           },
       };
-     
         render() {
     return(
       <View style = {styles.mainContainer}>
@@ -54,6 +56,9 @@ export class FinalReport extends Component {
         dataSource={this.state.dataSource}
         renderRow={(rowData) => <Text>{rowData}</Text>}
       />
+          <TouchableOpacity style = {styles.buttonTouch} onPress = { this.BeBack }>
+            <Text style ={styles.buttonText}>Rolove Another One</Text>
+          </TouchableOpacity>
           <Text></Text>
        </View>
     );
@@ -64,8 +69,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center', 
-    backgroundColor: '#ffffff',
-    margin: 7,
+    backgroundColor: '#ddd',
+ 
   },
   TextStyle:
  {
@@ -76,26 +81,38 @@ const styles = StyleSheet.create({
  },
  buttonTouch:
  {
-    width: 180,
+    width: 280,
     height: 50,
     paddingTop: 5,
     paddingBottom: 5,
+    borderRadius:50,
     paddingRight: 5,
     paddingLeft: 5,
-    backgroundColor: '#000000',
-    margin: 10,
+    borderColor:"#fff",
+    borderWidth:0.5,
+    backgroundColor:'#8589d2',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 70,
+    shadowColor:'#000000',
+    shadowOffset:{width:0 ,  height:2},
+    elevation:5
+   
+    
     
  },
  buttonText: {
-    fontSize: 23,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontWeight: 'normal',
     textAlign: 'center',
     color: '#ffffff',
-    backgroundColor: '#000000',
-  },
+    letterSpacing:3,
+    justifyContent:'center',
+    alignItems:'center',
+     fontFamily:'CaviarDreams',
+     shadowColor:'#000000',
+     shadowOffset:{width:0 ,  height:2},
+     elevation:5
+   },
   inputBox: {
     width: 300,
     height: 50,
