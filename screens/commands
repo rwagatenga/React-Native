@@ -1,0 +1,13 @@
+/*copy this and paste in command root of project to load all data in index.js*/
+
+
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+/*copy this command and paste in command to create final apk*/
+
+1. cd android
+2. gradlew assembleRelease
+
+/* or */
+
+cd android && ./gradlew assembleRelease

@@ -15,8 +15,11 @@ import { AppRegistry,
      AsyncStorage,
      ScrollView,
      ImageBackground,
-     Button
+     Button,
+      NetInfo
     } from 'react-native';
+import OfflineNotice from './OfflineNotice'
+import custom from './custom';
     import Logout from './logout'
 class LogoTitle extends React.Component {
   render() {
@@ -29,33 +32,32 @@ class LogoTitle extends React.Component {
   }
 }
 export class Report extends Component {
-  constructor (props) {
-    super (props);
-    //const { param } = this.props.navigation.state.params;
-    }
-  ViewReport = () => {
-  //{
-    
-    this.props.navigation.navigate('PaymentScreen');
-    // fetch('http://yateke.herokuapp.com/api/v1/pay',{
-    //   method: "POST",
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
-    //   },
-    //   body
-    // })
-    // .then((response) => response.json())
-    // .then((responseJson) => {
-    //   alert([responseJson.Names, responseJson.Payed, responseJson.Left]);
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
+  
+      componentDidMount() {
+         this.props.navigation.setParams({
+            showLogout: this.LogoutFunction
+        });
+  NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
 
+  NetInfo.isConnected.fetch().done(
+    (isConnected) => { this.setState({ status: isConnected }); }
+  )
+}
+
+componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+}
+
+handleConnectionChange = (isConnected) => {
+        this.setState({ status: isConnected });
+}
+//---------
+  ViewReport = () => {
+    this.props.navigation.navigate('PaymentScreen');
   }
+
  LogoutFunction = () => {
+  if(this.state.status){
         fetch('http://yateke.herokuapp.com/api/v1/logout', {
             method: "POST", 
             headers: {
@@ -74,34 +76,18 @@ export class Report extends Component {
     }).catch((error) => {
       console.error(error);
     });
+  }
+    else{
+    alert('Check your Internet Connection.');
+  }
 }
 MakeFunction = () => {
     this.props.navigation.navigate('MakesScreen');
   }
 
   VreportFunction = () => {
-  //   fetch('http://ayateke.herokuapp.com/api/v1/simple', {
-  // // fetch('http://192.168.43.16:8000/api/v1/add', {
-  //   method: 'GET',
-  //   headers: {
-  //     'Accept': 'application/json',
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
-  //   }
-    
-  // }).then((response) => response.json())
-  //   .then((responseJson) => {
-  //     if (responseJson) {
-  //       this.props.navigation.navigate(`VrepoScreen`, { param: responseJson });
-  //     }
-  //     else {
-  //       alert("Something went wrong!");
-  //     }
-  //   }).catch((error) => {
-  //     console.error(error);
-  //   });
+    if(this.state.status){
     fetch('http://yateke.herokuapp.com/api/v1/count', {
-  // fetch('http://192.168.43.16:8000/api/v1/add', {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -112,21 +98,6 @@ MakeFunction = () => {
   }).then((response) => response.json())
     .then((responseJson) => {
       
-      //alert( responseJson['View'].map((views) => views.firsname));
-      // for (var key in responseJson) {
-      //   if (responseJson.hasOwnProperty(key)) {
-      //     // alert(key + ": " + responseJson[key]);
-      //     // this.props.navigation.navigate('ReportScreen');
-      //      if(responseJson[key] == responseJson){
-      //       //AsyncStorage.setItem('access_token', responseJson)
-      //       //alert(key + " " + responseJson[key]);
-      //       //this.props.navigation.navigate('ReportScreen');
-      //     }
-      //     else{
-      //      alert(key + " " + responseJson[key]);
-      //     }
-      //   }
-      // }
       if (responseJson) {
         this.props.navigation.navigate(`VrepoScreen`, { param: responseJson });
       }
@@ -136,15 +107,18 @@ MakeFunction = () => {
     }).catch((error) => {
       console.error(error);
     });
+  }
+  else{
+    alert('Check your Internet Connection.');
+  }
 }
-	static navigationOptions = {
+	static navigationOptions = ({navigation}) => {
+          const {params} = navigation.state;
+          return{
+          headerRight: <Button title = {'Logout'} onPress = {() => params.showLogout()} style = {{backgroundColor:'#8589d2',}}/>,
           title: 'Receipt',
-          headerRight:<TouchableOpacity
-          title="Logout"
-          color="#000"
-          onPress = {()=>console.log("helllo wordl")}
-           />,
            headerLeft: null,
+
           headerTintColor: '#ffffff',
           headerStyle: {
             backgroundColor:'#8589d2',
@@ -152,12 +126,15 @@ MakeFunction = () => {
           headerTitleStyle: {
             fontSize: 18,
           },
+        };
+          
       };
   render() {
     //const {navigate} = this.props.navigation;
     return (
       
      <ImageBackground source={require('../images/back2.png')} style={{width: '100%', height: '100%', }}>
+     <OfflineNotice />
          <View style = {styles.mainContainer}>
          <ScrollView>
           <TouchableOpacity style = {styles.button} onPress = { this.MakeFunction }>
@@ -169,10 +146,7 @@ MakeFunction = () => {
           <TouchableOpacity style = {styles.button} onPress = {this.VreportFunction.bind(this)}>
           <Text style = {styles.buttonText3}>View Report</Text>
           </TouchableOpacity>
-          <TouchableOpacity style = {styles.button} onPress = {this.LogoutFunction.bind(this)}>
-          <Text style = {styles.buttonText3}>Logout</Text>
-          </TouchableOpacity>
-         </ScrollView>
+          </ScrollView>
           <Text></Text>
           </View>
           </ImageBackground>
@@ -181,6 +155,7 @@ MakeFunction = () => {
 }
 const styles = StyleSheet.create({
   mainContainer: {
+    marginTop: 40,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center', 
@@ -211,8 +186,8 @@ const styles = StyleSheet.create({
   alignItems: 'center',
  },
  buttonText2: {
-  width: 150,
-  height: 150,
+  width: 140,
+  height: 140,
   paddingBottom: 5,
   color:"#fff",
   textAlign:"center",
@@ -231,8 +206,8 @@ const styles = StyleSheet.create({
   elevation:5
  },
  buttonText3: {
-  width: 150,
-  height: 150,
+  width: 140,
+  height: 140,
   paddingBottom: 5,
   color:"#fff",
   textAlign:"center",
@@ -251,8 +226,8 @@ const styles = StyleSheet.create({
   elevation:5
  },
  buttonText: {
-  width: 150,
-  height: 150,
+  width: 140,
+  height: 140,
   paddingBottom: 5,
   color:"#fff",
   textAlign:"center",

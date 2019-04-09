@@ -12,8 +12,11 @@ import { AppRegistry,
     BackAndroid,
     AsyncStorage,
     ImageBackground,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+     NetInfo
     } from 'react-native';
+import OfflineNotice from './OfflineNotice'
+import custom from './custom';
 
 class Login extends Component
 {
@@ -45,8 +48,27 @@ class Login extends Component
     InputPassword: "",
   }
 }
+//-------
+      componentDidMount() {
+  NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
+  NetInfo.isConnected.fetch().done(
+    (isConnected) => { this.setState({ status: isConnected }); }
+  );
+}
+
+componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+}
+
+handleConnectionChange = (isConnected) => {
+        this.setState({ status: isConnected });
+}
+//---------
+
 LoginFunction = () => {
-  const {InputEmail} = this.state;
+  if(this.state.status){
+    const {InputEmail} = this.state;
   const {InputPassword} = this.state;
   if (InputEmail == "" || InputPassword == "") {
     alert("Fields are Empty");
@@ -78,7 +100,7 @@ LoginFunction = () => {
           // alert(key + ": " + responseJson[key]);
           // this.props.navigation.navigate('ReportScreen');
            if(responseJson[key] == responseJson.Hello){
-           	//AsyncStorage.setItem('access_token', responseJson)
+            //AsyncStorage.setItem('access_token', responseJson)
             alert(key + " " + responseJson[key]);
             this.props.navigation.navigate('ReportScreen');
           }
@@ -98,6 +120,12 @@ LoginFunction = () => {
     });
     Keyboard.dismiss();
     }
+
+  }
+  else{
+    alert('Check your Internet Connection.');
+  }
+  
 }
 
  render()
@@ -107,9 +135,10 @@ LoginFunction = () => {
        <ImageBackground source={require('../images/5.jpg')} style={{width: '100%', height: '100%', }}>
        {/* <Image style = {{width:80, height:83}} source = {require('../images/ayat.png')}/> */}
      
-       
+       <OfflineNotice />
      
           <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+          <Text></Text>
           <Text style = { styles.TextStyle }>Sign In </Text>
           <TextInput style = {styles.inputBox}
           underlineColorAndroid = 'rgba(0, 0, 0, 0)'
@@ -120,7 +149,7 @@ LoginFunction = () => {
           keyboardType = "email-address"
           onSubmitEditing = {() => this.password.focus()}
           onChangeText = {InputEmail => this.setState({InputEmail})}
-          value = {this.state.InputEmail}
+          value = {this.state.InputEmail ===''?null: this.state.InputEmail}
           />
           <TextInput style = {styles.inputBox}
           underlineColorAndroid = 'rgba(0, 0, 0, 0)'

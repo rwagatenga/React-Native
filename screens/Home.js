@@ -11,20 +11,18 @@ import { AppRegistry,
 		 Alert, 
      Keyboard,
      StatusBar,
-		 ImageBackground
+		 ImageBackground,
+     NetInfo
 		} from 'react-native';
 import Card from '../screens/Card';
+import OfflineNotice from './OfflineNotice'
+import custom from './custom';
 export class Home extends Component {
+
   state={
     fadeIn:new Animated.Value(0),
   }
-  // componentDidMount(){
-  //   Animated.timing(this.state.fadeIn,
-  //     {
-  //       toValue:1,
-  //       duration
-  //     })
-  // }
+ 
   
 	static navigationOptions = {
     header:null,
@@ -39,22 +37,48 @@ export class Home extends Component {
             fontSize: 18,
           },
       };
-      Login = () =>
-   {
+      componentDidMount() {
+  NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
+  NetInfo.isConnected.fetch().done(
+    (isConnected) => { this.setState({ status: isConnected }); }
+  );
+}
+
+componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+}
+
+handleConnectionChange = (isConnected) => {
+        this.setState({ status: isConnected });
+}
+
+getValue(){
+  //alert(`is connected: ${this.state.status}`);
+  if(this.state.status){
+    //alert('Internet is connected.');
     this.props.navigation.navigate('LoginScreen');
-   }
+
+  }else{
+    alert('Check your Internet Connection.');
+  }
+}
+    
   render() {
     
     return (
 
       <View style = {styles.mainContainer}>
+
+        
         <StatusBar 
         backgroundColor = "#8589d2"
         />
       <ImageBackground source={require('../images/3.jpg')} style={styles.BACK}>
 <Card> 
-
+<OfflineNotice />
 <View style={styles.title}>
+
         <Image style = {{width:150, height:150}} source = {require('./../images/ayat.png')}/>
       </View>
       <View style={styles.header}>
@@ -62,7 +86,7 @@ export class Home extends Component {
           <Text style = { styles.TextStyle2 }>Our Prime Concern</Text>
         </View>
         <View style={styles.containerBtn}>
-          <TouchableOpacity style = {styles.buttonTouch} onPress = { this.Login }>
+          <TouchableOpacity style = {styles.buttonTouch} onPress={this.getValue.bind(this)}>
             <Text style ={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
           </View>

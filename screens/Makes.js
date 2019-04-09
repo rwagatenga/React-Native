@@ -11,34 +11,71 @@ import { AppRegistry,
 	     BackHandler,
 	     BackAndroid,
 	     AsyncStorage,
-	     ImageBackground
-		} from 'react-native';
+	     ImageBackground,
+       Button,
+		  NetInfo
+    } from 'react-native';
+import OfflineNotice from './OfflineNotice';
+import custom from './custom';
 
 class Makes extends Component
 {
-	static navigationOptions = {
-          title: 'Receipt',
-          headerRight:<TouchableOpacity
-          title="Logout"
-          color="#000"
-          />,
-          headerTintColor: '#ffffff',
-          headerStyle: {
-            backgroundColor:'#8589d2'
-          },
-      
-          headerTitleStyle: {
-            fontSize: 18,
-            fontFamily : "CaviarDreams"
-          },
-      };
   constructor(props){
   super(props);
   this.state = {
     InputWmeter: '',
   }
 }
+
+//-------
+     componentDidMount() {
+        this.props.navigation.setParams({
+            showLogout: this.LogoutFunction
+        });
+  NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
+  NetInfo.isConnected.fetch().done(
+    (isConnected) => { this.setState({ status: isConnected }); }
+  );
+}
+
+componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+}
+
+handleConnectionChange = (isConnected) => {
+        this.setState({ status: isConnected });
+}
+//---------
+LogoutFunction = () => {
+  if(this.state.status){
+        fetch('http://yateke.herokuapp.com/api/v1/logout', {
+            method: "POST", 
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
+            },
+            // body: JSON.stringify({
+            //   access_token: STORAGE_KEY
+            // })
+        })
+        .then((response) => response.json())
+    .then((responseJson) => {
+      alert(responseJson.message);
+      this.props.navigation.navigate('LoginScreen');
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+    else{
+    alert('Check your Internet Connection.');
+  }
+}
+  
+
 LoginFunction = () => {
+  if(this.state.status){
   const {InputWmeter} = this.state;
 
   if (InputWmeter == "" ) {
@@ -77,38 +114,39 @@ LoginFunction = () => {
     });
     Keyboard.dismiss();
     }
+  }
+  else{
+    alert('Check your Internet Connection.');
+  }
 }
-LogoutFunction = () => {
+  static navigationOptions = ({navigation}) => {
+          const {params} = navigation.state;
+          return{
+          headerRight: <Button title = {'Logout'} onPress = {() => params.showLogout()} style = {{backgroundColor:'#8589d2',}}/>,
+          // //title: 'Receipt',
+          //  headerLeft: null,
 
-  fetch('http://yateke.herokuapp.com/api/v1/logout', {
-      method: "POST", 
-      headers: {
-          // 'Accept': 'application/json',
-          // 'Content-Type': 'application/json',
-          'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
-      },
-      // body: JSON.stringify({
-      //   access_token: STORAGE_KEY
-      // })
-  })
-  .then((response) => response.json())
-.then((responseJson) => {
-alert(responseJson.message);
-this.props.navigation.navigate('LoginScreen');
-}).catch((error) => {
-console.error(error);
-});
-}
+          headerTintColor: '#ffffff',
+          headerStyle: {
+            backgroundColor:'#8589d2',
+          },
+          headerTitleStyle: {
+            fontSize: 18,
+          },
+        };
+          
+      };
  render()
  {
     return(
        <View style = { styles.mainContainer }>
        <ImageBackground source={require('../images/back3.png')} style={{width: '100%', height: '100%', }}>
-       
          
 <View>
 <ImageBackground source={require('../images/user.png')} style={{width: '100%', height: '100%', }}>
+<OfflineNotice/>
 <View style={styles.mainContainer}>
+
 <TextInput style = {styles.inputBox}
           underlineColorAndroid = '#8589d2'
           placeholder = 'Customer Id Number '

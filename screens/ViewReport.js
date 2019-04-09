@@ -14,8 +14,12 @@ import { AppRegistry,
      ActivityIndicator,
      FlatList,
      List,
-     Button
-		} from 'react-native';
+     Button,
+      NetInfo
+    } from 'react-native';
+import OfflineNotice from './OfflineNotice';
+import custom from './custom';
+
 export class ViewReport extends Component {
   constructor (props){
     super (props);
@@ -30,17 +34,67 @@ export class ViewReport extends Component {
       //wmeter: param.Water_Meter,
     }
   }
-	static navigationOptions = {
-          title: 'ViewReport',
+  //-------
+     componentDidMount() {
+        this.props.navigation.setParams({
+            showLogout: this.LogoutFunction
+        });
+  NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
+  NetInfo.isConnected.fetch().done(
+    (isConnected) => { this.setState({ status: isConnected }); }
+  );
+}
+
+componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+}
+
+handleConnectionChange = (isConnected) => {
+        this.setState({ status: isConnected });
+}
+//---------
+LogoutFunction = () => {
+  if(this.state.status){
+        fetch('http://yateke.herokuapp.com/api/v1/logout', {
+            method: "POST", 
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'UTg0Y0NENE01OXZEdkFtckNmM0lFdzJJWjdoVUVBZmc3Y25Kc1hNNVJ0Z0liNFdlVlZMZkZPeVl5M0ls5b8d1235e4bd2'
+            },
+            // body: JSON.stringify({
+            //   access_token: STORAGE_KEY
+            // })
+        })
+        .then((response) => response.json())
+    .then((responseJson) => {
+      alert(responseJson.message);
+      this.props.navigation.navigate('LoginScreen');
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+    else{
+    alert('Check your Internet Connection.');
+  }
+}
+  static navigationOptions = ({navigation}) => {
+          const {params} = navigation.state;
+          return{
+          headerRight: <Button title = {'Logout'} onPress = {() => params.showLogout()} style = {{backgroundColor:'#8589d2',}}/>,
+          // //title: 'Receipt',
+          //  headerLeft: null,
+
           headerTintColor: '#ffffff',
           headerStyle: {
-            backgroundColor: '#000000',
-            borderBottomColor: '#ffffff',
-            borderBottomWidth: 3,
+            backgroundColor:'#8589d2',
           },
           headerTitleStyle: {
             fontSize: 18,
           },
+        };
+          
       };
         render() {
     return(

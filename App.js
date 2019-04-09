@@ -28,7 +28,8 @@ const AppNavigator = createStackNavigator({
   ViewScreen: { screen: Views },
   FinalScreen: { screen: FinalReport },
   PaymentScreen: { screen: DailPay },
-  VrepoScreen: { screen: Vreport }
+  VrepoScreen: { screen: Vreport },
+
 });
 export default class App extends Component {
   static navigationOptions = {
